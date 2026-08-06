@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Azure Functions local settings
+local.settings.json
+
+# Environment variables and secrets
+.env
+.env.*
+*.secret
+*.key
+
+# Azure Functions generated files
+.funcignore
+bin/
+obj/
+
+# Azurite local data
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
+.azurite/
+azurite-data/
+azurite-debug.log
+
+# VS Code local workspace settings
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db

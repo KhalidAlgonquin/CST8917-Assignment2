@@ -1,0 +1,157 @@
+@host = http://localhost:7071
+
+
+###############################################################################
+# SCENARIO 1 — Valid expense under $100
+# Expected: automatically approved
+###############################################################################
+
+# @name autoApprove
+POST {{host}}/api/expenses
+Content-Type: application/json
+
+{
+  "employeeName": "Khalid Amchat",
+  "employeeEmail": "khalid@example.com",
+  "amount": 75,
+  "category": "supplies",
+  "description": "Office supplies",
+  "managerEmail": "manager@example.com"
+}
+
+###
+
+# Run this request after starting the orchestration.
+GET {{autoApprove.response.body.$.statusQueryGetUri}}
+
+
+###############################################################################
+# SCENARIO 2 — Manager approves
+###############################################################################
+
+# @name submitForApproval
+POST {{host}}/api/expenses
+Content-Type: application/json
+
+{
+  "employeeName": "Khalid Amchat",
+  "employeeEmail": "khalid@example.com",
+  "amount": 250,
+  "category": "travel",
+  "description": "Transportation to a conference",
+  "managerEmail": "manager@example.com"
+}
+
+###
+
+POST {{host}}/api/expenses/{{submitForApproval.response.body.$.id}}/decision
+Content-Type: application/json
+
+{
+  "decision": "approve",
+  "decidedBy": "Test Manager",
+  "comments": "Approved for the conference."
+}
+
+###
+
+GET {{submitForApproval.response.body.$.statusQueryGetUri}}
+
+
+###############################################################################
+# SCENARIO 3 — Manager rejects
+###############################################################################
+
+# @name submitForRejection
+POST {{host}}/api/expenses
+Content-Type: application/json
+
+{
+  "employeeName": "Khalid Amchat",
+  "employeeEmail": "khalid@example.com",
+  "amount": 400,
+  "category": "equipment",
+  "description": "Additional computer monitor",
+  "managerEmail": "manager@example.com"
+}
+
+###
+
+POST {{host}}/api/expenses/{{submitForRejection.response.body.$.id}}/decision
+Content-Type: application/json
+
+{
+  "decision": "reject",
+  "decidedBy": "Test Manager",
+  "comments": "Not included in the current budget."
+}
+
+###
+
+GET {{submitForRejection.response.body.$.statusQueryGetUri}}
+
+
+###############################################################################
+# SCENARIO 4 — No manager response
+# Wait at least 30 seconds before checking the status.
+# Expected: automatically approved and flagged as escalated
+###############################################################################
+
+# @name submitForTimeout
+POST {{host}}/api/expenses
+Content-Type: application/json
+
+{
+  "employeeName": "Khalid Amchat",
+  "employeeEmail": "khalid@example.com",
+  "amount": 150,
+  "category": "software",
+  "description": "Development software licence",
+  "managerEmail": "manager@example.com"
+}
+
+###
+
+GET {{submitForTimeout.response.body.$.statusQueryGetUri}}
+
+
+###############################################################################
+# SCENARIO 5 — Missing required fields
+###############################################################################
+
+# @name missingFields
+POST {{host}}/api/expenses
+Content-Type: application/json
+
+{
+  "employeeName": "Khalid Amchat",
+  "employeeEmail": "khalid@example.com",
+  "amount": 60,
+  "category": "meals"
+}
+
+###
+
+GET {{missingFields.response.body.$.statusQueryGetUri}}
+
+
+###############################################################################
+# SCENARIO 6 — Invalid category
+###############################################################################
+
+# @name invalidCategory
+POST {{host}}/api/expenses
+Content-Type: application/json
+
+{
+  "employeeName": "Khalid Amchat",
+  "employeeEmail": "khalid@example.com",
+  "amount": 85,
+  "category": "entertainment",
+  "description": "Invalid category test",
+  "managerEmail": "manager@example.com"
+}
+
+###
+
+GET {{invalidCategory.response.body.$.statusQueryGetUri}}
