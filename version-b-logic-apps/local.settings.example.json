@@ -1,0 +1,9 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "<AZURE_STORAGE_CONNECTION_STRING>",
+        "FUNCTIONS_WORKER_RUNTIME": "python",
+        "SERVICE_BUS_CONNECTION_STRING": "<SERVICE_BUS_SEND_CONNECTION_STRING>",
+        "EXPENSE_QUEUE_NAME": "expense-requests"
+    }
+}

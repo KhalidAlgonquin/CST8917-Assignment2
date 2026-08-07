@@ -1,0 +1,82 @@
+#@host = http://localhost:7072
+@host = https://khalid-cst8917-a2-functions-bzddfrfgehfnaubp.canadacentral-01.azurewebsites.net
+###############################################################################
+# TEST 1 — Submit an expense to Service Bus
+###############################################################################
+
+POST {{host}}/api/expenses
+Content-Type: application/json
+
+{
+  "employeeName": "Khalid Amchat",
+  "employeeEmail": "amch0001@algonquinlive.com",
+  "amount": 275,
+  "category": "supplies",
+  "description": "Office supplies",
+  "managerEmail": "amch0001@algonquinlive.com"
+}
+
+
+###############################################################################
+# TEST 2 — Validate a valid expense envelope
+###############################################################################
+
+###
+
+POST {{host}}/api/validate-expense
+Content-Type: application/json
+
+{
+  "expenseId": "test-expense-001",
+  "submittedAtUtc": "2026-08-06T16:00:00Z",
+  "expense": {
+    "employeeName": "Khalid Amchat",
+    "employeeEmail": "khalid@example.com",
+    "amount": 250,
+    "category": "travel",
+    "description": "Conference transportation",
+    "managerEmail": "manager@example.com"
+  }
+}
+
+
+###############################################################################
+# TEST 3 — Missing required fields
+###############################################################################
+
+###
+
+POST {{host}}/api/validate-expense
+Content-Type: application/json
+
+{
+  "expenseId": "test-expense-002",
+  "expense": {
+    "employeeName": "Khalid Amchat",
+    "employeeEmail": "khalid@example.com",
+    "amount": 60,
+    "category": "meals"
+  }
+}
+
+
+###############################################################################
+# TEST 4 — Invalid category
+###############################################################################
+
+###
+
+POST {{host}}/api/validate-expense
+Content-Type: application/json
+
+{
+  "expenseId": "test-expense-003",
+  "expense": {
+    "employeeName": "Khalid Amchat",
+    "employeeEmail": "khalid@example.com",
+    "amount": 85,
+    "category": "entertainment",
+    "description": "Invalid category test",
+    "managerEmail": "manager@example.com"
+  }
+}
