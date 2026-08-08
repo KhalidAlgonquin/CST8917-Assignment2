@@ -1,5 +1,5 @@
-@host = http://localhost:7071
-
+#@host = http://localhost:7071
+@host = https://khalid-cst8917-a2-va-durable-akbgcdhka6ecb7dt.canadacentral-01.azurewebsites.net
 
 ###############################################################################
 # SCENARIO 1 — Valid expense under $100
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "employeeName": "Khalid Amchat",
-  "employeeEmail": "khalid@example.com",
+  "employeeEmail": "amch0001@algonquinlive.com",
   "amount": 75,
   "category": "supplies",
   "description": "Office supplies",
@@ -35,11 +35,11 @@ Content-Type: application/json
 
 {
   "employeeName": "Khalid Amchat",
-  "employeeEmail": "khalid@example.com",
+  "employeeEmail": "amch0001@algonquinlive.com",
   "amount": 250,
   "category": "travel",
   "description": "Transportation to a conference",
-  "managerEmail": "manager@example.com"
+  "managerEmail": "amch0001@algonquinlive.com"
 }
 
 ###
@@ -68,11 +68,11 @@ Content-Type: application/json
 
 {
   "employeeName": "Khalid Amchat",
-  "employeeEmail": "khalid@example.com",
+  "employeeEmail": "amch0001@algonquinlive.com",
   "amount": 400,
   "category": "equipment",
   "description": "Additional computer monitor",
-  "managerEmail": "manager@example.com"
+  "managerEmail": "amch0001@algonquinlive.com"
 }
 
 ###

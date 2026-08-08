@@ -10,7 +10,7 @@ Content-Type: application/json
 {
   "employeeName": "Khalid Amchat",
   "employeeEmail": "amch0001@algonquinlive.com",
-  "amount": 275,
+  "amount": 75,
   "category": "supplies",
   "description": "Office supplies",
   "managerEmail": "amch0001@algonquinlive.com"
