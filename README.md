@@ -211,18 +211,6 @@ External work such as email delivery is performed inside activity functions inst
 
 For the assignment demonstration, the timeout was configured to a short period. A production system would normally use a much longer manager approval period.
 
-### 3.3 Challenges
-
-One issue occurred when the manager decision event reached the orchestrator. The event result was received as a string in my test while the code expected a dictionary, which caused:
-
-```text
-'str' object has no attribute 'get'
-```
-
-I fixed this by handling both dictionary and JSON-string event payloads before reading the `decision` property.
-
-I also had to keep external operations outside the orchestrator because Durable Functions can replay orchestrator code.
-
 ---
 
 ## 4. Version B: Azure Logic Apps + Service Bus
@@ -237,11 +225,10 @@ The implementation includes:
 - Logic App Consumption workflow.
 - Python HTTP validation Function.
 - Office 365 Outlook manager approval.
-- Service Bus `expense-outcomes` topic.
-- `approved-subscription`.
-- `rejected-subscription`.
-- `escalated-subscription`.
-- SQL filters using the `outcome` application property.
+- Service Bus `expense-outcomes` topic with 3 subscriptions using SQL filters for the `outcome`: 
+        - `approved-subscription`.
+        - `rejected-subscription`.
+        - `escalated-subscription`.
 - Employee email notifications.
 
 ### 4.2 Manager Approval Approach
@@ -316,8 +303,6 @@ Both implementations were tested with the six scenarios required by the assignme
 
 Both implementations achieved the same business workflow, but the development experience was very different. Durable Functions felt more natural to me as a programmer because the complete workflow was expressed in Python. I could read the orchestrator from top to bottom and see the order of validation, automatic approval, manager approval, timeout, result processing, and notification. The activity functions also kept responsibilities separate. However, the code-first approach required more understanding of Durable Functions concepts such as orchestration replay, deterministic code, external events, durable timers, and activity chaining.
 
-The most important issue I faced in Version A happened when the manager approval event reached the orchestrator. The external-event payload was received as a string in my local test, while my code expected a dictionary. This produced the error `'str' object has no attribute 'get'`. I fixed it by safely handling both dictionary and JSON-string representations before reading the decision. After this fix, the Approve and Reject scenarios worked correctly.
-
 Logic Apps was faster for building visible branches because conditions and actions could be added through the designer. It was easy to understand the overall flow by looking at the diagram. However, configuration problems sometimes took longer to diagnose than Python errors. I had to troubleshoot JSON serialization when calling the validation Function, Service Bus application properties, the manager timeout, parallel branches, and run-after settings. Therefore, Logic Apps reduced coding but did not remove technical complexity.
 
 ### 6.2 Testability
@@ -346,7 +331,7 @@ Durable Functions provided status endpoints, custom orchestration status, Functi
 
 ### 6.6 Cost
 
-I used Azure public pricing as a rough estimate and treated the numbers as planning estimates rather than exact bills. My assumptions are 30 days per month, **100 expenses/day = 3,000 expenses/month**, and **10,000 expenses/day = 300,000 expenses/month**.
+I used Azure public pricing as a rough estimate. My assumptions are 30 days per month, **100 expenses/day = 3,000 expenses/month**, and **10,000 expenses/day = 300,000 expenses/month**.
 
 For Durable Functions, I assume **Flex Consumption on-demand**, a 2-GB instance, approximately five function executions per expense, and about one second of total active function execution per expense. Waiting for manager input is durable waiting rather than one minute of continuously running compute. Azure currently includes **250,000 on-demand executions and 100,000 GB-s per month** for Flex Consumption. Current public pricing lists additional on-demand executions at about **$0.40 per million** and resource consumption at about **$0.000026/GB-s**.
 
@@ -367,33 +352,7 @@ If I were building this workflow for production, I would choose **Azure Durable 
 
 I would choose **Logic Apps** instead when the workflow needs frequent integration with Microsoft 365 or other SaaS services, or when operations staff and non-developers need to understand the workflow visually. Its run history made troubleshooting and demonstrations much easier because every branch, input, output, and skipped action was visible. The Outlook and Service Bus connectors also reduced the amount of integration code I had to write.
 
-My main concern with Logic Apps is that visual workflows can still become complicated. The timeout scenario required careful run-after settings, parallel branches, and a final merge action. For this specific workflow, my production preference is therefore Durable Functions for the core orchestration, with Logic Apps being a strong option for integration-heavy workflows where visual management is more important than code-level control.
-
----
-
-### Version A: Local Run
-
-```bash
-cd version-a-durable-functions
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-func start
-```
-
-Azurite must also be running for local Durable Functions storage.
-
-### Version B: Local Function Run
-
-```bash
-cd version-b-logic-apps
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-func start --port 7072
-```
-
-The Logic App and Service Bus resources run in Azure.
+My main concern with Logic Apps is that visual workflows can still become complicated. For this specific workflow, my production preference is therefore Durable Functions for the core orchestration, with Logic Apps being a strong option for integration-heavy workflows where visual management is more important than code-level control.
 
 ---
 
@@ -401,7 +360,7 @@ The Logic App and Service Bus resources run in Azure.
 
 **Presentation:** [`presentation/slides.pptx`](presentation/slides.pptx)
 
-**Video:** Add the final YouTube URL to [`presentation/video-link.md`](presentation/video-link.md).
+**Video:** 
 
 ---
 
