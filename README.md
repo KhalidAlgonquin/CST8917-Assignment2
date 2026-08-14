@@ -363,7 +363,7 @@ My main concern with Logic Apps is that visual workflows can still become compli
 **Video:** 
 
 YouTube demo video link:
-[`Watch demo video`](https://youtu.be/J6HL-HDoJuo) 
+[`Watch demo video`](https://youtu.be/QgHaoGAhi2k) 
 
 ---
 
@@ -387,4 +387,4 @@ YouTube demo video link:
 
 ## 13. AI Disclosure
 
-AI tools, including ChatGPT, were used during this assignment to help troubleshoot implementation errors, and assist with drafting and organizing documentation. All workflow configurations and code were reviewed, implemented, tested, and validated against the assignment requirements before inclusion in the final project.
+AI tools, including ChatGPT, were used during this assignment to help troubleshoot implementation errors, and assist with drafting and organizing documentation. All workflow configurations and code were reviewed, implemented, tested, and validated before inclusion in the final project.
