@@ -1,7 +1,7 @@
 # CST8917 Assignment 2 - Dual Implementation of an Expense Approval Workflow
 
 **Student:** Khalid Amchat  
-**Student Number:** `041`  
+**Student Number:** `041125350`  
 **Course:** CST8917 - Serverless Applications  
 **Term:** S26  
 
@@ -361,6 +361,9 @@ My main concern with Logic Apps is that visual workflows can still become compli
 **Presentation:** [`presentation/slides.pptx`](presentation/slides.pptx)
 
 **Video:** 
+
+YouTube demo video link:
+[`Watch demo video`](https://youtu.be/J6HL-HDoJuo) 
 
 ---
 
